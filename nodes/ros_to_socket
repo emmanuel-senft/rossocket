@@ -16,7 +16,6 @@ class NamedMessage:
 def split(array, l):
     for i in range(0, len(array), l):
         yield array[i:i+l]
-    return None
 
 rospy.init_node('ros_to_socket')
 topics = rospy.get_param('~topics').split(',')
