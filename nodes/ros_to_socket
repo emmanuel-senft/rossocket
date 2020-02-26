@@ -28,7 +28,7 @@ s.connect((host, port))
 def subscriber_callback(topic, msg):
     named_msg = NamedMessage(topic, msg)
     message_bytes = pickle.dumps(msg)
-    size = struct.calcsize(">L", message_bytes)
+    size = struct.pack(">L", len(message_bytes))
     s.sendall(size + message_bytes)
     return
 
