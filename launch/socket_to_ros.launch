@@ -1,0 +1,10 @@
+<launch>
+    <arg name="topics"/>
+    <arg name="types"/>
+    <arg name="port"/>
+    <node name="socket_to_ros" pkg="rossocket" type="socket_to_ros" output="screen">
+        <param name="topics" value="$(arg topics)"/>
+        <param name="types" value="$(arg types)"/>
+        <param name="port" value="$(arg port)"/>
+    </node>
+</launch>

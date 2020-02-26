@@ -1,0 +1,17 @@
+<package format="2">
+  <name>rossocket</name>
+  <version>0.1.0</version>
+  <description>
+    Nodes for transporting and receiving ros messages over a socket.
+    Not useful unless you can't connect to the roscore normally (like with WSL 1).
+  </description>
+  <author>Kevin Welsh</author>
+  <maintainer email="wisconsinhci@gmail.com">UW HCI</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>rospy</exec_depend>
+</package>

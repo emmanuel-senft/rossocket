@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+import rospy
+import sys
+from functools import partial
+from multiprocessing import Process
+import pickle
+import socket
+from sensor_msgs.msg import Image
+import struct
+
+class NamedMessage:
+    def __init__(self, topic, message):
+        self.topic = topic
+        self.message = message
+
+def split(array, l):
+    for i in range(0, len(array), l):
+        yield array[i:i+l]
+    return None
+
+rospy.init_node('ros_to_socket')
+topics = rospy.get_param('~topics').split(',')
+types = rospy.get_param('~types').split(',')
+host = rospy.get_param('~host')
+port = rospy.get_param('~port')
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((host, port))
+
+def subscriber_callback(msg):
+    message_bytes = pickle.dumps(msg)
+    size = struct.pack(">L", len(message_bytes))
+    s.sendall(size + message_bytes)
+    return
+
+subs = []
+for topic, t in zip(topics, types):
+    try:
+        exec('from std_msgs.msg import ' + t)
+    except:
+        try:
+            exec('from sensor_msgs.msg import ' + t)
+        except:
+            print('Import failed ' + t)
+    exec('data_class = ' + t)
+    subs.append(rospy.Subscriber(topic, data_class, partial(subscriber_callback, topic)))
+
+rospy.spin()
