@@ -26,7 +26,8 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('', port))
 s.listen(10)
 
-def subscriber_callback(msg):
+def subscriber_callback(topic, msg):
+    named_msg = NamedMessage(topic, msg)
     message_bytes = pickle.dumps(msg)
     size = struct.calcsize(">L", message_bytes)
     s.sendall(size + message_bytes)
